@@ -17,7 +17,7 @@
 	display: flex;
 	flex-shrink: 0;
 	flex-direction: column;
-	gap: 4px;
+	gap: 50px;
 	box-sizing: border-box;
 	width: 616px;
 	height: auto;
@@ -25,24 +25,6 @@
 	padding: 50px 31px;
 	background-color: #fff;
 	border-right: 1px solid #000;
-}
-
-@container params-form (min-height: 700px) {
-	.form {
-		gap: 24px;
-	}
-}
-
-@container params-form (min-height: 900px) {
-	.form {
-		gap: 50px;
-	}
-}
-
-@container params-form (min-height: 1200px) {
-	.form {
-		gap: 90px;
-	}
 }
 
 .bottomContainer {

@@ -16,7 +16,7 @@ import {
   contentWidthArr,
 } from '../../constants/articleProps';
 
-import type { ArticleStateType } from '../../constants/articleProps';
+import type { ArticleStateType, OptionType } from '../../constants/articleProps';
 
 import styles from './ArticleParamsForm.module.scss';
 
@@ -28,16 +28,15 @@ export const ArticleParamsForm = ({
   onApply,
 }: ArticleParamsFormProps): React.JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
-  const [fontFamily, setFontFamily] = useState(defaultArticleState.fontFamilyOption);
-  const [fontSize, setFontSize] = useState(defaultArticleState.fontSizeOption);
-  const [fontColor, setFontColor] = useState(defaultArticleState.fontColor);
-
-  const [backgroundColor, setBackgroundColor] = useState(
-    defaultArticleState.backgroundColor
-  );
-  const [contentWidth, setContentWidth] = useState(defaultArticleState.contentWidth);
+  const [formState, setFormState] = useState(defaultArticleState);
 
   const rootRef = useRef<HTMLDivElement>(null);
+
+  const handleChange =
+    (field: keyof ArticleStateType) =>
+    (option: OptionType): void => {
+      setFormState({ ...formState, [field]: option });
+    };
 
   useEffect(() => {
     if (!isOpen) {
@@ -64,22 +63,12 @@ export const ArticleParamsForm = ({
             className={styles.form}
             onSubmit={(event) => {
               event.preventDefault();
-              onApply({
-                fontFamilyOption: fontFamily,
-                fontSizeOption: fontSize,
-                fontColor,
-                backgroundColor,
-                contentWidth,
-              });
+              onApply(formState);
               setIsOpen(false);
             }}
             onReset={(event) => {
               event.preventDefault();
-              setFontFamily(defaultArticleState.fontFamilyOption);
-              setFontSize(defaultArticleState.fontSizeOption);
-              setFontColor(defaultArticleState.fontColor);
-              setBackgroundColor(defaultArticleState.backgroundColor);
-              setContentWidth(defaultArticleState.contentWidth);
+              setFormState(defaultArticleState);
               onApply(defaultArticleState);
             }}
           >
@@ -90,22 +79,22 @@ export const ArticleParamsForm = ({
             <Select
               title="шрифт"
               options={fontFamilyOptions}
-              selected={fontFamily}
-              onChange={setFontFamily}
+              selected={formState.fontFamilyOption}
+              onChange={handleChange('fontFamilyOption')}
             />
 
             <RadioGroup
               name="font-size"
               title="размер шрифта"
               options={fontSizeOptions}
-              selected={fontSize}
-              onChange={setFontSize}
+              selected={formState.fontSizeOption}
+              onChange={handleChange('fontSizeOption')}
             />
             <Select
               title="цвет шрифта"
               options={fontColors}
-              selected={fontColor}
-              onChange={setFontColor}
+              selected={formState.fontColor}
+              onChange={handleChange('fontColor')}
             />
 
             <Separator />
@@ -113,14 +102,14 @@ export const ArticleParamsForm = ({
             <Select
               title="цвет фона"
               options={backgroundColors}
-              selected={backgroundColor}
-              onChange={setBackgroundColor}
+              selected={formState.backgroundColor}
+              onChange={handleChange('backgroundColor')}
             />
             <Select
               title="ширина контента"
               options={contentWidthArr}
-              selected={contentWidth}
-              onChange={setContentWidth}
+              selected={formState.contentWidth}
+              onChange={handleChange('contentWidth')}
             />
             <div className={styles.bottomContainer}>
               <Button title="Сбросить" htmlType="reset" type="clear" />

@@ -22,7 +22,7 @@ jobs:
     - name: Install Playwright browsers
       run: |
         npm i --prefix /tmp/tests-blog-customizer
-        npx --prefix /tmp/tests-blog-customizer playwright install chromium --with-deps
+        npx --prefix /tmp/tests-blog-customizer playwright install chromium
     - name: Run tests
       run: bash /tmp/tests-blog-customizer/run.sh
     - uses: actions/upload-artifact@v4

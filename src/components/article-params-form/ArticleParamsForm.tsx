@@ -3,9 +3,11 @@ import { Select } from '@/ui/select';
 import { Separator } from '@/ui/separator';
 import { Text } from '@/ui/text';
 import { clsx } from 'clsx';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
+
+import { useOutsideClickClose } from '@hooks/useOutsideClickClose';
 
 import {
   defaultArticleState,
@@ -38,21 +40,11 @@ export const ArticleParamsForm = ({
       setFormState({ ...formState, [field]: option });
     };
 
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-    const handleClick = (event: MouseEvent): void => {
-      const { target } = event;
-      if (target instanceof Node && !rootRef.current?.contains(target)) {
-        setIsOpen(false);
-      }
-    };
-    window.addEventListener('mousedown', handleClick);
-    return (): void => {
-      window.removeEventListener('mousedown', handleClick);
-    };
-  }, [isOpen]);
+  useOutsideClickClose({
+    isOpen,
+    rootRef,
+    onChange: setIsOpen,
+  });
 
   return (
     <>
